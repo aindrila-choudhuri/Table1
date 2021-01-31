@@ -4,3 +4,11 @@ export const HEADINGS = [
     'Status',
     'Age',
   ];
+export const STATUS = [
+  "Filter",
+  "Running",
+  "Pending",
+  "Succeeded",
+  "Failed",
+  "Unknown",
+]

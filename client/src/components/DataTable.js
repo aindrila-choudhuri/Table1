@@ -32,6 +32,10 @@ export default class DataTable extends React.Component {
     )
   };
 
+  handleClick = (e) => {
+    console.log("===clicked===", e.target.innerText);
+  }
+
   render() {
     const {headings, rows} = this.props;
 
@@ -48,7 +52,7 @@ export default class DataTable extends React.Component {
   
     return (
       <table className="Table">
-        <thead>{theadMarkup}</thead>
+        <thead onClick={this.handleClick}>{theadMarkup}</thead>
         <tbody>{tbodyMarkup}</tbody>
       </table>
     );

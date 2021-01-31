@@ -20,3 +20,12 @@ table {
     background-color: #aaafaa;
     color: white;
   }
+
+  .left {
+    text-align: left;
+  }
+
+  .filter {
+    float: left;
+    padding-right: 20px;
+  }

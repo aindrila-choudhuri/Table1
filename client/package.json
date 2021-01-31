@@ -15,7 +15,13 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dev:api": "cd ../server/ && node app.js",
+    "dev:client": "npm start",
+    "dev1": "npm run dev:api && npm run dev:client",
+    "dev:k8": "kubectl proxy --port=8090 &",
+    
+    "dev": "npm run dev:k8 && npm start"
   },
   "eslintConfig": {
     "extends": [

@@ -65,8 +65,15 @@ function ListPods() {
     }
 
     useEffect(()=> {
-        fetch("http://localhost:3001/").then(response => response.json())
+        fetch("http://localhost:8090/api/v1/pods").then(response => {
+                console.log("====response===", response);
+                response.json()
+            });
+        fetch("http://localhost:8060/").then(response => response.json())
         .then(data => {
+            
+           
+            data.forEach( pod => pod.age = new Date(pod.age).toString());
             setPodDetails(data)
             
             const result = data.map(({ name, nameSpace, status, age }) => [name, nameSpace, status, age]);
@@ -76,10 +83,13 @@ function ListPods() {
 
     return(
         <div>
-            <h1>Pods</h1>
-            <div><FilterText filter = {filter || ""} columnName = "name" changeHandler={handleChange}/></div>
+            <h1 className="left">Pods</h1>
+            <div className="left">
+                <FilterText filter = {filter || ""} columnName = "name" changeHandler={handleChange}/>
+                <FilterSelect filer = {filterSelect} changeHandler={handleSelect}/>
+            </div>
             
-            <FilterSelect filer = {filterSelect} changeHandler={handleSelect}/>
+            
             <DataTable headings={HEADINGS} rows={row} sortedObj={sortedObj} changeHandler={handleSort}/>
         </div>
     )

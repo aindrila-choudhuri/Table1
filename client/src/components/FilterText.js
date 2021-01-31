@@ -1,8 +1,9 @@
 import React from 'react';
+import "./table.css";
 
 const FilterText = (props) => {
     return(
-        <span>
+        <span className="filter">
             Search: {" "}
             <input value = {props.filter} onChange={e => props.changeHandler(e.target.value, props.columnName)}/>
         </span>

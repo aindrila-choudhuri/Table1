@@ -4,13 +4,14 @@ import './DataTable.css';
 
 export default class DataTable extends React.Component {
   renderHeadingRow = (_cell, cellIndex) => {
-    const {headings} = this.props;
-
+    const {headings, sortedObj} = this.props;
+    
     return (
       <Cell
         key={`heading-${cellIndex}`}
         content={headings[cellIndex]}
         header={true}
+        sortedObj={sortedObj}
       />
     )
   };
@@ -32,18 +33,14 @@ export default class DataTable extends React.Component {
     )
   };
 
-  handleClick = (e) => {
-    console.log("===clicked===", e.target.innerText);
-  }
-
   render() {
-    const {headings, rows} = this.props;
+    const {headings, rows, changeHandler} = this.props;
 
     this.renderHeadingRow = this.renderHeadingRow.bind(this);
     this.renderRow = this.renderRow.bind(this);
     
     const theadMarkup = (
-      <tr key="heading">
+      <tr key="heading" onClick={(e) => changeHandler(e.target.innerText.toLowerCase(), e.target.cellIndex)}>
         {headings.map(this.renderHeadingRow)}
       </tr>
     );
@@ -52,7 +49,7 @@ export default class DataTable extends React.Component {
   
     return (
       <table className="Table">
-        <thead onClick={this.handleClick}>{theadMarkup}</thead>
+        <thead>{theadMarkup}</thead>
         <tbody>{tbodyMarkup}</tbody>
       </table>
     );

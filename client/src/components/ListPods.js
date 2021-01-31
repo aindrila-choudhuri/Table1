@@ -11,6 +11,35 @@ function ListPods() {
     const [row, setRowData] = useState([]);
     const [filter, setFilter] = useState("");
     const [filterSelect, setFilterSelect] = useState("");
+    const [sortedObj, setSortedObj] = React.useState({columnName: "", isSorted: false, isSortedAsc: false});
+
+    function handleSort(colName, colIndex){
+        const nextIsSorteObj = {...sortedObj};
+        
+        if (sortedObj.columnName === "" ||sortedObj.columnName === colName) {
+            if(!sortedObj.isSorted) {
+                nextIsSorteObj.isSorted = true;
+                nextIsSorteObj.isSortedAsc = true;
+            } else {
+                nextIsSorteObj.isSortedAsc = !nextIsSorteObj.isSortedAsc;
+            }
+        } else {
+            nextIsSorteObj.isSorted = true;
+            nextIsSorteObj.isSortedAsc = true;
+        }
+
+        setSortedObj({columnName: colName, isSorted: nextIsSorteObj.isSorted, isSortedAsc: nextIsSorteObj.isSortedAsc});
+        
+        const sortedRowArr = [...row]
+        
+        if (nextIsSorteObj.isSortedAsc) {
+            sortedRowArr.sort((a, b) => (a[colIndex] > b[colIndex]) ? 1 : -1);
+        } else{
+            sortedRowArr.sort((a, b) => (a[colIndex] > b[colIndex]) ? -1 : 1);
+        }
+        
+        setRowData(sortedRowArr);
+    }
 
     function handleChange(val, colName) {
         setFilter(val);
@@ -33,16 +62,6 @@ function ListPods() {
         }
         const result = filteredPod.map(({ name, nameSpace, status, age }) => [name, nameSpace, status, age]);
         setRowData(result);
-        sortData("name");
-    }
-
-    function sortData(colName){
-        const sortedPod = [...podDetails].sort((a, b) => (a[colName] > b[colName]) ? 1 : -1);
-        console.log("==sortedPod==", sortedPod);
-        console.log("==podDetails==", podDetails);
-        const result = sortedPod.map(({ name, nameSpace, status, age }) => [name, nameSpace, status, age]);
-        console.log("==result==", result);
-        //setRowData(result);
     }
 
     useEffect(()=> {
@@ -57,10 +76,11 @@ function ListPods() {
 
     return(
         <div>
-            Pods
-            <FilterText filter = {filter || ""} columnName = "name" changeHandler={handleChange}/>
+            <h1>Pods</h1>
+            <div><FilterText filter = {filter || ""} columnName = "name" changeHandler={handleChange}/></div>
+            
             <FilterSelect filer = {filterSelect} changeHandler={handleSelect}/>
-            <DataTable headings={HEADINGS} rows={row} />
+            <DataTable headings={HEADINGS} rows={row} sortedObj={sortedObj} changeHandler={handleSort}/>
         </div>
     )
 }
